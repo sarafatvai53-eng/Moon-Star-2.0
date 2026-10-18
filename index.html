@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Moon Star</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6efe0;--ink:#2a2740;--mute:#7a7490;--accent:#2d2a57;--accent-ink:#fbf6ea;--star:#e6a93a;--err:#b8384a;
+--glass:rgba(255,252,244,.46);--glass-strong:rgba(255,253,248,.72);--edge:rgba(255,255,255,.75);--shade:rgba(80,60,30,.14);--field:rgba(255,255,255,.5);
+--b1:#f2c79b;--b2:#cdc4f0;--b3:#f7dd9a;
+--ease:cubic-bezier(.32,.72,0,1);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1814;--ink:#f6efe0;--mute:#b3a994;--accent:#f0e3c4;--accent-ink:#2a2318;--star:#f2bd57;--err:#ff8f9d;--glass:rgba(60,52,42,.45);--glass-strong:rgba(70,60,48,.7);--edge:rgba(255,240,210,.22);--shade:rgba(0,0,0,.4);--field:rgba(255,245,225,.08);--b1:#6b4a2b;--b2:#3b3566;--b3:#6a5522}}
+:root[data-theme="dark"]{--bg:#1c1814;--ink:#f6efe0;--mute:#b3a994;--accent:#f0e3c4;--accent-ink:#2a2318;--star:#f2bd57;--err:#ff8f9d;--glass:rgba(60,52,42,.45);--glass-strong:rgba(70,60,48,.7);--edge:rgba(255,240,210,.22);--shade:rgba(0,0,0,.4);--field:rgba(255,245,225,.08);--b1:#6b4a2b;--b2:#3b3566;--b3:#6a5522}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri",-apple-system,system-ui,sans-serif;overflow-x:hidden}
+.blobs{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.blobs i{position:absolute;border-radius:50%;filter:blur(60px);opacity:.85;animation:drift 18s ease-in-out infinite alternate}
+.blobs i:nth-child(1){width:300px;height:300px;background:var(--b1);top:-60px;left:-80px}
+.blobs i:nth-child(2){width:340px;height:340px;background:var(--b2);bottom:-100px;right:-110px;animation-duration:22s}
+.blobs i:nth-child(3){width:200px;height:200px;background:var(--b3);top:42%;left:55%;animation-duration:26s}
+@keyframes drift{to{transform:translate(40px,-30px) scale(1.15)}}
+.wrap{position:relative;z-index:1;width:100%;max-width:420px;margin:0 auto;padding:34px 20px 48px;animation:win .9s var(--ease) both}
+@keyframes win{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.logo{width:58px;height:58px;flex:none;border-radius:16px;background:var(--glass-strong);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);box-shadow:inset 0 1px 0 var(--edge),0 8px 22px var(--shade);display:grid;place-items:center}
+h1{font-size:31px;margin:0;font-weight:700;letter-spacing:.2px}
+.sub{color:var(--mute);margin:0 0 22px;font-size:15px}
+.card{position:relative;background:var(--glass);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid var(--edge);border-radius:30px;padding:22px;box-shadow:inset 0 1.5px 0 var(--edge),inset 0 -1px 0 rgba(255,255,255,.12),0 18px 40px var(--shade);overflow:hidden}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.5),rgba(255,255,255,0) 38%);pointer-events:none;opacity:.6}
+.card>*{position:relative}
+.tabs{display:flex;position:relative;background:var(--field);border-radius:999px;padding:4px;margin-bottom:18px;box-shadow:inset 0 1px 3px var(--shade)}
+.pill{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;background:var(--glass-strong);box-shadow:inset 0 1px 0 var(--edge),0 3px 10px var(--shade);transition:transform .55s var(--ease)}
+.tabs button{flex:1;position:relative;border:0;background:none;color:var(--mute);font:inherit;font-weight:600;padding:10px;border-radius:999px;cursor:pointer;transition:color .3s var(--ease)}
+.tabs button[aria-selected="true"]{color:var(--ink)}
+label{display:block;font-size:14px;font-weight:600;margin:14px 0 6px}
+input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--field);border:1px solid var(--edge);border-radius:16px;padding:13px 15px;box-shadow:inset 0 1px 3px var(--shade);transition:transform .45s var(--ease),box-shadow .3s}
+input::placeholder{color:var(--mute);opacity:.7}
+input:focus{outline:none;transform:scale(1.015);box-shadow:inset 0 1px 3px var(--shade),0 0 0 3px color-mix(in srgb,var(--star) 55%,transparent)}
+.row{display:flex;gap:8px}.row .cc{width:92px;flex:none}
+button{-webkit-appearance:none}
+.btn{width:100%;margin-top:20px;border:0;border-radius:18px;padding:15px;font:inherit;font-size:16px;font-weight:700;background:var(--accent);color:var(--accent-ink);cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 10px 22px var(--shade);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.btn:active{transform:scale(.95)}
+.btn.alt{background:var(--glass-strong);color:var(--ink);border:1px solid var(--edge);margin-top:12px;display:flex;gap:10px;justify-content:center;align-items:center;box-shadow:inset 0 1px 0 var(--edge),0 6px 16px var(--shade)}
+.btn:focus-visible,.link:focus-visible,.tabs button:focus-visible{outline:2px solid var(--star);outline-offset:2px}
+.link{background:none;border:0;color:var(--ink);font:inherit;font-weight:700;cursor:pointer;padding:0;text-decoration:underline;text-decoration-color:var(--star);text-underline-offset:3px;transition:transform .3s var(--ease)}
+.link:active{transform:scale(.94)}
+.msg{min-height:22px;margin:12px 0 0;font-size:14px;color:var(--err)}
+.msg.ok{color:var(--ink)}
+.hint{color:var(--mute);font-size:13px;margin:10px 0 0}
+.or{display:flex;align-items:center;gap:10px;color:var(--mute);font-size:13px;margin-top:18px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--edge)}
+.otp{display:flex;gap:8px;justify-content:space-between}
+.otp input{text-align:center;padding:13px 0;font-size:20px;font-weight:700}
+.hide{display:none!important}
+.center{text-align:center}
+.big{font-size:23px;font-weight:700;margin:4px 0 8px}
+.avatar{width:80px;height:80px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:32px;font-weight:700;margin:6px auto 12px;box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 12px 26px var(--shade)}
+.foot{text-align:center;color:var(--mute);font-size:14px;margin-top:16px}
+@media (prefers-reduced-motion:reduce){.blobs i,.wrap,.bub{animation:none}.pill,.btn,input{transition:none}}
+
+.app{padding:0;height:min(78vh,660px);display:flex;flex-direction:column}
+.views{flex:1;position:relative;overflow:hidden}
+.view{position:absolute;inset:0;display:flex;flex-direction:column;padding:18px 16px 0}
+.view h2{font-size:28px;margin:4px 4px 12px}
+.search{margin-bottom:10px;border-radius:999px;padding:10px 16px;font-size:15px}
+.list{flex:1;overflow-y:auto;margin:0 -6px;padding:0 6px 10px}
+.item{width:100%;display:flex;gap:12px;align-items:center;text-align:left;border:0;background:none;color:var(--ink);font:inherit;padding:10px;border-radius:18px;cursor:pointer;transition:transform .4s var(--ease),background .3s}
+.item:active{transform:scale(.97);background:var(--field)}
+.av{width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.item .mid{flex:1;min-width:0}.item b{display:block}
+.item span{display:block;color:var(--mute);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item time{color:var(--mute);font-size:12px;align-self:flex-start;margin-top:4px}
+.bar{display:flex;gap:6px;margin:8px 14px 14px;padding:5px;border-radius:999px;background:var(--glass-strong);border:1px solid var(--edge);box-shadow:inset 0 1px 0 var(--edge),0 8px 20px var(--shade)}
+.bar button{flex:1;border:0;background:none;color:var(--mute);font:inherit;font-weight:600;padding:10px;border-radius:999px;cursor:pointer;transition:background .45s var(--ease),color .45s var(--ease)}
+.bar button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.chead{display:flex;align-items:center;gap:10px;padding-bottom:10px}
+.chead small{display:block;color:var(--mute);font-size:12px;min-height:16px}
+.ibtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--edge);background:var(--glass-strong);color:var(--ink);font-size:22px;cursor:pointer;line-height:1;transition:transform .4s var(--ease)}
+.ibtn:active{transform:scale(.88)}
+.msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;padding:4px 2px 10px}
+.b{max-width:78%;padding:9px 13px;border-radius:20px;font-size:15px;line-height:1.4;word-break:break-word;animation:pop .5s var(--ease) both}
+.b.me{align-self:flex-end;background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:6px;transform-origin:100% 100%}
+.b.them{align-self:flex-start;background:var(--glass-strong);border:1px solid var(--edge);border-bottom-left-radius:6px;transform-origin:0 100%}
+.b small{display:block;font-size:10px;opacity:.65;margin-top:2px;text-align:right}
+@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.compose{display:flex;gap:8px;padding:8px 0 14px}.compose input{border-radius:999px}
+.send{width:46px;height:46px;flex:none;border-radius:50%;border:0;background:var(--accent);color:var(--accent-ink);font-size:20px;font-weight:700;cursor:pointer;transition:transform .4s var(--ease)}
+.send:active{transform:scale(.88)}
+#v-me{align-items:center;justify-content:center;text-align:center}
+.empty{color:var(--mute);text-align:center;padding:30px 12px;font-size:15px;line-height:1.5}
+
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.top h2{margin:4px 4px 0}
+.top .ibtn{font-size:17px;color:var(--star);background:var(--accent);border-color:transparent;box-shadow:0 6px 14px var(--shade)}
+.sbox{position:relative;margin-bottom:12px}
+.sbox>svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--mute);pointer-events:none}
+.sbox .search{margin:0;padding:12px 42px 12px 42px;background:var(--glass-strong);box-shadow:inset 0 1px 0 var(--edge),0 4px 14px var(--shade)}
+.clr{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;border:0;background:var(--mute);color:var(--bg);cursor:pointer;line-height:1;font-size:16px;padding:0}
+.rail{display:flex;gap:14px;overflow-x:auto;padding:4px 4px 12px;margin:0 -4px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail button{flex:none;width:60px;background:none;border:0;color:var(--ink);font:inherit;font-size:12px;cursor:pointer;text-align:center;transition:transform .4s var(--ease)}
+.rail button:active{transform:scale(.9)}
+.rail .av{width:54px;height:54px;margin:0 auto 5px}
+.rail span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.av.ring{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--star)}
+.sec{font-size:12.5px;color:var(--mute);font-weight:600;padding:2px 8px 6px}
+.item{padding:10px 8px;border-radius:16px}
+.item+.item{box-shadow:0 -1px 0 color-mix(in srgb,var(--edge) 70%,transparent)}
+.item .av{width:52px;height:52px;font-size:20px}
+.item b{font-size:16px}
+mark{background:none;color:inherit;font-weight:700;box-shadow:inset 0 -.5em 0 color-mix(in srgb,var(--star) 50%,transparent)}
+.go{flex:none;font-size:12.5px;font-weight:700;padding:6px 13px;border-radius:999px;background:var(--accent);color:var(--accent-ink)}
+.empty{white-space:pre-line}
+.chead{background:var(--glass-strong);border:1px solid var(--edge);border-radius:24px;padding:8px 12px 8px 8px;margin-bottom:8px;box-shadow:inset 0 1px 0 var(--edge),0 6px 18px var(--shade)}
+.chead .av{width:40px;height:40px}
+.chead b{font-size:16px}
+.msgs{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M20 22l1.6 3.6 3.6 1.6-3.6 1.6L20 32l-1.6-3.6-3.6-1.6 3.6-1.6z' fill='%23c9a24a' opacity='.24'/%3E%3Ccircle cx='82' cy='70' r='2' fill='%23c9a24a' opacity='.22'/%3E%3Cpath d='M92 18a7 7 0 1 0 5 12 5.5 5.5 0 0 1-5-12z' fill='%23c9a24a' opacity='.22'/%3E%3Cpath d='M44 90l1.2 2.8 2.8 1.2-2.8 1.2L44 98l-1.2-2.8-2.8-1.2 2.8-1.2z' fill='%23c9a24a' opacity='.24'/%3E%3C/svg%3E");background-size:120px;border-radius:22px;padding:10px 8px;gap:4px}
+.day{align-self:center;font-size:12px;color:var(--mute);background:var(--glass-strong);border:1px solid var(--edge);padding:3px 13px;border-radius:999px;margin:8px 0 4px}
+.b{position:relative;padding:8px 12px 5px;box-shadow:0 1px 2px var(--shade);margin-top:3px}
+.b.cont{margin-top:0}
+.b.them{background:color-mix(in srgb,var(--ink) 8%,var(--bg));border:0}
+.b.me.tail{border-bottom-right-radius:4px}.b.them.tail{border-bottom-left-radius:4px}
+.b.tail::after{content:"";position:absolute;bottom:0;width:9px;height:11px}
+.b.me.tail::after{right:-6px;background:var(--accent);clip-path:polygon(0 0,100% 100%,0 100%)}
+.b.them.tail::after{left:-6px;background:color-mix(in srgb,var(--ink) 8%,var(--bg));clip-path:polygon(100% 0,100% 100%,0 100%)}
+.compose{background:var(--glass-strong);border:1px solid var(--edge);border-radius:999px;padding:5px 5px 5px 16px;margin:8px 0 12px;align-items:center;box-shadow:inset 0 1px 0 var(--edge),0 8px 20px var(--shade)}
+.compose input,.compose input:focus{background:none;border:0;box-shadow:none;padding:8px 4px;border-radius:0;transform:none}
+.send{color:var(--star);opacity:.45;transform:scale(.88)}
+.compose.has .send{opacity:1;transform:scale(1)}
+:root.full{padding:0}
+.full body{overflow:hidden}
+.full .wrap{max-width:none;margin:0;padding:0;height:100dvh;animation:none}
+.full .app{height:100dvh;border-radius:0;border:0;box-shadow:none;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);backdrop-filter:blur(30px) saturate(160%);-webkit-backdrop-filter:blur(30px) saturate(160%)}
+.full .app::before{display:none}
+.full .view{padding:14px 16px 0}
+@media (prefers-reduced-motion:reduce){.b{animation:none}}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== এখানে Firebase Console থেকে পাওয়া firebaseConfig বসান ===== */
+var firebaseConfig={
+  apiKey:"AIzaSyCwzbndX9mAlTMsTkOpZUeuASqW9B4jhWE",
+  authDomain:"moon-star-74.firebaseapp.com",
+  projectId:"moon-star-74",
+  storageBucket:"moon-star-74.firebasestorage.app",
+  messagingSenderId:"217456376092",
+  appId:"1:217456376092:web:f2ef966949da6d3446e2d9"
+};
+/* ================================================================= */
+</script>
+</head>
+<body>
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="wrap">
+  <div class="brand" id="brand">
+    <div class="logo"><svg width="38" height="38" viewBox="0 0 64 64" aria-hidden="true"><path d="M40 10a22 22 0 1 0 14 38A18 18 0 0 1 40 10z" fill="var(--accent)"/><path d="M47 12l2 4.8 4.8 2-4.8 2-2 4.8-2-4.8-4.8-2 4.8-2z" fill="var(--star)"/></svg></div>
+    <h1>Moon Star</h1>
+  </div>
+  <p class="sub" id="sub">আপনার একাউন্ট খুলে চ্যাট শুরু করুন</p>
+
+  <section class="card" id="s-auth">
+    <div class="tabs" role="tablist">
+      <div class="pill" id="pill"></div>
+      <button role="tab" id="t-phone" aria-selected="true">ফোন নাম্বার</button>
+      <button role="tab" id="t-mail" aria-selected="false">Gmail / ইমেইল</button>
+    </div>
+    <div id="p-phone">
+      <label for="ph">ফোন নাম্বার</label>
+      <div class="row"><input class="cc" id="cc" value="+880" inputmode="tel" aria-label="কান্ট্রি কোড"><input id="ph" inputmode="numeric" placeholder="1XXXXXXXXX"></div>
+      <button class="btn" id="send">কোড পাঠান</button>
+    </div>
+    <div id="p-mail" class="hide">
+      <label for="em">ইমেইল</label>
+      <input id="em" type="email" placeholder="name@gmail.com" autocomplete="email">
+      <label for="pw">পাসওয়ার্ড</label>
+      <input id="pw" type="password" placeholder="কমপক্ষে ৬ অক্ষর" autocomplete="current-password">
+      <button class="btn" id="mailBtn">একাউন্ট খুলুন</button>
+      <div class="or">অথবা</div>
+      <button class="btn alt" id="gBtn"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.7 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.8 6.1C12.3 13.5 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.4 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.9-4.7l-7.8-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2.1 1.4-4.7 2.3-7.7 2.3-6.3 0-11.7-4-13.6-9.8l-7.8 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Google দিয়ে চালিয়ে যান</button>
+      <p class="hint" id="modeHint">আগে থেকে একাউন্ট আছে? <button class="link" id="sw">লগইন করুন</button></p>
+    </div>
+    <p class="msg" id="msg" role="alert"></p>
+  </section>
+
+  <section class="card hide" id="s-otp">
+    <p class="big">কোড লিখুন</p>
+    <p class="sub" style="margin-bottom:16px" id="otpTo"></p>
+    <div class="otp" id="otpBox"></div>
+    <button class="btn" id="verify">যাচাই করুন</button>
+    <p class="hint">আপনার ফোনে SMS-এ আসা ৬ সংখ্যার কোড লিখুন।</p>
+    <p class="msg" id="msg2" role="alert"></p>
+    <p class="foot"><button class="link" id="back">নাম্বার বদলান</button></p>
+  </section>
+
+  <section class="card hide" id="s-profile">
+    <p class="big">আপনার নাম দিন</p>
+    <label for="nm">নাম</label>
+    <input id="nm" placeholder="যেমন: রাফি" maxlength="30">
+    <button class="btn" id="saveName">চালিয়ে যান</button>
+    <p class="msg" id="msg3" role="alert"></p>
+  </section>
+
+  <section class="card hide app" id="s-home">
+    <div class="views">
+      <div class="view" id="v-list">
+        <div class="top"><h2>চ্যাট</h2><button class="ibtn" id="newc" aria-label="নতুন চ্যাট">&#10022;</button></div>
+        <div class="sbox"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input class="search" id="q" placeholder="নাম খুঁজুন" aria-label="নাম খুঁজুন" autocomplete="off"><button class="clr hide" id="clr" aria-label="মুছুন">&#215;</button></div>
+        <div class="rail hide" id="rail"></div>
+        <div class="list" id="list"></div>
+      </div>
+      <div class="view hide" id="v-chat">
+        <div class="chead"><button class="ibtn" id="cb" aria-label="ফিরে যান">&#8249;</button><div class="av" id="cav"></div><div><b id="cname"></b><small id="cstat"></small></div></div>
+        <div class="msgs" id="msgs"></div>
+        <div class="compose"><input id="mi" placeholder="মেসেজ লিখুন" aria-label="মেসেজ"><button class="send" id="ms" aria-label="পাঠান">&#10022;</button></div>
+      </div>
+      <div class="view hide" id="v-me">
+        <div class="avatar" id="av"></div>
+        <p class="big" id="hello"></p>
+        <p class="sub" id="who" style="margin-bottom:10px"></p>
+        <button class="btn alt" id="out" style="width:auto;padding:13px 28px">লগআউট</button>
+      </div>
+    </div>
+    <nav class="bar" id="bar"><button id="n-list" aria-selected="true">চ্যাট</button><button id="n-me" aria-selected="false">প্রোফাইল</button></nav>
+  </section>
+</div>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+var KEY="moonstar_accounts",SES="moonstar_session",EASE="cubic-bezier(.32,.72,0,1)";
+var still=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var accounts=load(KEY,{}),pending=null,mode="signup",memSession=null,cur="s-auth",busy=false;
+
+/* স্ক্রিন ট্রানজিশন: স্কেল + ব্লার + ফেড (iOS স্প্রিং কার্ভ) */
+function swap(outEl,inEl,back,done){
+  if(still){outEl.classList.add("hide");inEl.classList.remove("hide");done&&done();return}
+  var o=outEl.animate([{opacity:1,transform:"scale(1)",filter:"blur(0)"},{opacity:0,transform:back?"scale(1.06)":"scale(.93)",filter:"blur(10px)"}],{duration:240,easing:"ease-in"});
+  o.onfinish=function(){outEl.classList.add("hide");inEl.classList.remove("hide");
+    var a=inEl.animate([{opacity:0,transform:back?"scale(.93)":"scale(1.07)",filter:"blur(10px)"},{opacity:1,transform:"scale(1)",filter:"blur(0)"}],{duration:560,easing:EASE});
+    a.onfinish=function(){done&&done()}}}
+function show(id,back){if(id===cur||busy)return;busy=true;var from=$(cur);cur=id;
+  $("sub").classList.toggle("hide",id==="s-home");$("brand").classList.toggle("hide",id==="s-home");
+  setTimeout(function(){document.documentElement.classList.toggle("full",id==="s-home")},still?0:240);
+  swap(from,$(id),back,function(){busy=false;var f=$(id).querySelector("input");if(f&&id!=="s-home")f.focus({preventScroll:true})})}
+function say(el,t,ok){el.textContent=t;el.className="msg"+(ok?" ok":"")}
+function shake(el){if(!still)el.animate([{transform:"translateX(0)"},{transform:"translateX(-7px)"},{transform:"translateX(6px)"},{transform:"translateX(-3px)"},{transform:"translateX(0)"}],{duration:380,easing:EASE})}
+function err(m,t,box){say(m,t);shake(box||$("s-auth"))}
+
+/* ট্যাব */
+function tab(w){var p=w==="phone";$("t-phone").setAttribute("aria-selected",p);$("t-mail").setAttribute("aria-selected",!p);
+$("pill").style.transform=p?"translateX(0)":"translateX(100%)";say($("msg"),"");
+var a=$(p?"p-mail":"p-phone"),b=$(p?"p-phone":"p-mail");
+if(still){a.classList.add("hide");b.classList.remove("hide");return}
+a.animate([{opacity:1,transform:"scale(1)"},{opacity:0,transform:"scale(.96)"}],{duration:160}).onfinish=function(){a.classList.add("hide");b.classList.remove("hide");b.animate([{opacity:0,transform:"scale(1.04)"},{opacity:1,transform:"scale(1)"}],{duration:420,easing:EASE})}}
+$("t-phone").onclick=function(){if($("p-phone").classList.contains("hide"))tab("phone")};
+$("t-mail").onclick=function(){if($("p-mail").classList.contains("hide"))tab("mail")};
+
+function setMode(m){mode=m;var s=m==="signup";$("mailBtn").textContent=s?"একাউন্ট খুলুন":"লগইন করুন";
+$("modeHint").innerHTML=s?'আগে থেকে একাউন্ট আছে? <button class="link" id="sw">লগইন করুন</button>':'নতুন? <button class="link" id="sw">একাউন্ট খুলুন</button>';
+$("sw").onclick=function(){setMode(s?"login":"signup")};say($("msg"),"")}
+$("sw").onclick=function(){setMode("login")};
+
+/* Firebase চালু */
+var READY=!!(window.firebase&&firebaseConfig.apiKey&&firebaseConfig.apiKey.indexOf("PASTE")!==0),auth=null,fs=null;
+if(READY){firebase.initializeApp(firebaseConfig);auth=firebase.auth();auth.languageCode="bn";fs=firebase.firestore()}
+else say($("msg"),"Firebase কনফিগ বসানো হয়নি। ফাইলের ওপরের firebaseConfig-এ আপনার তথ্য দিন।");
+function go(id,back){if(busy)return setTimeout(function(){go(id,back)},120);show(id,back)}
+function bnErr(e){var m={"auth/invalid-phone-number":"ফোন নাম্বার ঠিক নয়।","auth/too-many-requests":"অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।","auth/invalid-verification-code":"কোডটি ঠিক নয়।","auth/code-expired":"কোডের সময় শেষ। নতুন কোড নিন।","auth/email-already-in-use":"এই ইমেইল দিয়ে একাউন্ট আছে। লগইন করুন।","auth/invalid-credential":"ইমেইল বা পাসওয়ার্ড মিলছে না।","auth/wrong-password":"ইমেইল বা পাসওয়ার্ড মিলছে না।","auth/user-not-found":"ইমেইল বা পাসওয়ার্ড মিলছে না।","auth/weak-password":"পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।","auth/popup-closed-by-user":"Google সাইন-ইন বাতিল হয়েছে।","auth/network-request-failed":"ইন্টারনেট সংযোগ দেখুন।","auth/unauthorized-domain":"এই ডোমেইন Firebase-এ অনুমোদিত নয়। Authorized domains-এ যোগ করুন.","auth/operation-not-allowed":"Firebase-এ এই সাইন-ইন পদ্ধতি চালু করা হয়নি।"};
+var c=(e&&e.code)||"";return m[c]||("সমস্যা হয়েছে ("+(c||"unknown")+")")}
+
+/* ফোন */
+for(var i=0;i<6;i++){(function(){var x=document.createElement("input");x.maxLength=1;x.inputMode="numeric";x.setAttribute("aria-label","সংখ্যা "+(i+1));
+x.oninput=function(){x.value=x.value.replace(/\D/g,"");if(x.value&&x.nextSibling)x.nextSibling.focus()};
+x.onkeydown=function(e){if(e.key==="Backspace"&&!x.value&&x.previousSibling)x.previousSibling.focus()};$("otpBox").appendChild(x)})()}
+var rv=null,confirmation=null;
+$("send").onclick=function(){var n=$("ph").value.replace(/\D/g,"").replace(/^0/,""),c=$("cc").value.trim();
+if(!/^\+\d{1,4}$/.test(c))return err($("msg"),"কান্ট্রি কোড ঠিক নয়। যেমন: +880");
+if(n.length<8||n.length>11)return err($("msg"),"ফোন নাম্বার ঠিক নয়। সংখ্যা যাচাই করে আবার দিন।");
+if(!READY)return err($("msg"),"Firebase কনফিগ বসানো হয়নি।");
+pending=c+n;var btn=$("send");btn.disabled=true;say($("msg"),"");
+if(!rv)rv=new firebase.auth.RecaptchaVerifier("send",{size:"invisible"});
+auth.signInWithPhoneNumber(pending,rv).then(function(r){confirmation=r;$("otpTo").textContent=pending+" নাম্বারে কোড পাঠানো হয়েছে";go("s-otp")},function(e){err($("msg"),bnErr(e));try{rv.clear()}catch(x){}rv=null}).then(function(){btn.disabled=false})};
+$("back").onclick=function(){go("s-auth",true)};
+$("verify").onclick=function(){var code=Array.prototype.map.call($("otpBox").children,function(x){return x.value}).join("");
+if(code.length<6)return err($("msg2"),"৬ সংখ্যার কোডটি পুরো লিখুন।",$("s-otp"));
+if(!confirmation)return err($("msg2"),"আগে কোড পাঠান।",$("s-otp"));
+say($("msg2"),"");var v=$("verify");v.disabled=true;
+confirmation.confirm(code).catch(function(e){err($("msg2"),bnErr(e),$("s-otp"))}).then(function(){v.disabled=false})};
+
+/* ইমেইল ও Google */
+$("mailBtn").onclick=function(){var e=$("em").value.trim().toLowerCase(),pw=$("pw").value;
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))return err($("msg"),"ইমেইল ঠিক নয়। যেমন: name@gmail.com");
+if(pw.length<6)return err($("msg"),"পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");
+if(!READY)return err($("msg"),"Firebase কনফিগ বসানো হয়নি।");
+say($("msg"),"");(mode==="signup"?auth.createUserWithEmailAndPassword(e,pw):auth.signInWithEmailAndPassword(e,pw)).catch(function(x){err($("msg"),bnErr(x))})};
+$("gBtn").onclick=function(){if(!READY)return err($("msg"),"Firebase কনফিগ বসানো হয়নি।");
+auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function(e){err($("msg"),bnErr(e))})};
+
+/* প্রোফাইলের নাম সেভ */
+$("saveName").onclick=function(){var n=$("nm").value.trim(),u=auth&&auth.currentUser;if(!n)return err($("msg3"),"নাম লিখুন।",$("s-profile"));if(!u)return;
+var prof={id:u.uid,name:n,nameLower:n.toLowerCase()};
+fs.doc("users/"+u.uid).set(prof).then(function(){enter(u,prof)}).catch(function(){err($("msg3"),"সেভ করা যায়নি। Firestore Rules ও ইন্টারনেট দেখুন।",$("s-profile"))})};
+
+/* Firestore ডাটা */
+function chatId(a,b){return a<b?a+"__"+b:b+"__"+a}
+function docs(s){return s.docs.map(function(d){return d.data()})}
+var store=READY?{
+searchUsers:function(q){return fs.collection("users").where("nameLower",">=",q).where("nameLower","<=",q+"\uf8ff").limit(20).get().then(docs)},
+watchThreads:function(u,cb){return fs.collection("inbox/"+u+"/threads").onSnapshot(function(s){cb(docs(s))},function(){})},
+watchMsgs:function(c,cb){return fs.collection("chats/"+c+"/msgs").orderBy("ts").onSnapshot(function(s){cb(docs(s))},function(){})},
+send:function(m){var c=chatId(m.from,m.to),b=fs.batch();
+b.set(fs.collection("chats/"+c+"/msgs").doc(),m);
+b.set(fs.doc("inbox/"+m.from+"/threads/"+m.to),{peer:m.to,name:m.toName,last:m.text,ts:m.ts,lf:m.from});
+b.set(fs.doc("inbox/"+m.to+"/threads/"+m.from),{peer:m.from,name:m.fromName,last:m.text,ts:m.ts,lf:m.from});return b.commit()}
+}:null;
+var storeP=Promise.resolve(store);
+
+/* চ্যাট লিস্ট ও সার্চ */
+var me=null,peer=null,threads=[],allUsers=[],unT=null,unM=null,lastFetch=0,shown=0,vcur="v-list";
+function tm(t){try{return new Date(t).toLocaleTimeString("bn-BD",{hour:"numeric",minute:"2-digit"})}catch(e){return""}}
+function ini(n){return(n||"?").charAt(0).toUpperCase()}
+function setAv(el,n){var x=0,s=n||"?";for(var i=0;i<s.length;i++)x=(x*31+s.charCodeAt(i))%360;el.textContent=ini(n);el.style.background="hsl("+x+",42%,42%)"}
+var note=document.createElement("p");note.className="hint";$("v-me").insertBefore(note,$("out"));
+
+function view(v){if(v===vcur)return;var o=$(vcur),n=$(v);vcur=v;
+$("bar").classList.toggle("hide",v==="v-chat");$("n-list").setAttribute("aria-selected",v==="v-list");$("n-me").setAttribute("aria-selected",v==="v-me");
+if(still){o.classList.add("hide");n.classList.remove("hide");return}
+o.animate([{opacity:1,transform:"scale(1)"},{opacity:0,transform:"scale(.95)"}],{duration:180,easing:"ease-in"}).onfinish=function(){o.classList.add("hide");n.classList.remove("hide");
+n.animate([{opacity:0,transform:"scale(1.05)"},{opacity:1,transform:"scale(1)"}],{duration:480,easing:EASE})}}
+function resetView(){["v-chat","v-me"].forEach(function(i){$(i).classList.add("hide")});$("v-list").classList.remove("hide");$("bar").classList.remove("hide");vcur="v-list";$("n-list").setAttribute("aria-selected","true");$("n-me").setAttribute("aria-selected","false")}
+$("n-list").onclick=function(){view("v-list")};$("n-me").onclick=function(){view("v-me")};
+
+function hl(el,t,q){var i=q?t.toLowerCase().indexOf(q):-1;if(i<0){el.textContent=t;return}el.appendChild(document.createTextNode(t.slice(0,i)));var m=document.createElement("mark");m.textContent=t.slice(i,i+q.length);el.appendChild(m);el.appendChild(document.createTextNode(t.slice(i+q.length)))}
+function item(name,subt,t,fn,q){var b=document.createElement("button");b.className="item";var a=document.createElement("div");a.className="av";setAv(a,name);
+var m=document.createElement("div");m.className="mid";var n=document.createElement("b"),s=document.createElement("span");hl(n,name,q);s.textContent=subt;m.appendChild(n);m.appendChild(s);b.appendChild(a);b.appendChild(m);
+if(t){var x=document.createElement("time");x.textContent=tm(t);b.appendChild(x)}else if(q){var g=document.createElement("div");g.className="go";g.textContent="চ্যাট";b.appendChild(g)}
+b.onclick=fn;return b}
+function empty(t){var d=document.createElement("div");d.className="empty";d.textContent=t;return d}
+function sec(t){var d=document.createElement("div");d.className="sec";d.textContent=t;return d}
+function sorted(){return threads.slice().sort(function(a,b){return b.ts-a.ts})}
+function renderRail(on){var r=$("rail");r.textContent="";r.classList.toggle("hide",!on||!threads.length);
+sorted().slice(0,8).forEach(function(t){var b=document.createElement("button"),a=document.createElement("div"),s=document.createElement("span");a.className="av ring";setAv(a,t.name);s.textContent=t.name.split(" ")[0];b.appendChild(a);b.appendChild(s);b.onclick=function(){openChat({id:t.peer,name:t.name})};r.appendChild(b)})}
+function renderList(){var q=$("q").value.trim().toLowerCase(),l=$("list");l.textContent="";$("clr").classList.toggle("hide",!q);if(!me)return;renderRail(!q);
+if(q){var r=allUsers.filter(function(u){return u.id!==me.id&&(u.nameLower||"").indexOf(q)>-1});
+if(!r.length)return l.appendChild(empty("এই নামে কাউকে পাওয়া যায়নি\nনামটি ঠিক লিখেছেন কিনা দেখুন।"));
+l.appendChild(sec(r.length+" জন পাওয়া গেছে"));
+r.forEach(function(u){l.appendChild(item(u.name,"চ্যাট শুরু করতে ট্যাপ করুন",0,function(){openChat({id:u.id,name:u.name})},q))});return}
+if(!threads.length)return l.appendChild(empty("এখনো কোনো চ্যাট নেই\nউপরের সার্চে কারো নাম লিখে চ্যাট শুরু করুন।"));
+l.appendChild(sec("সব চ্যাট"));
+sorted().forEach(function(t){l.appendChild(item(t.name,(t.lf===me.id?"আপনি: ":"")+t.last,t.ts,function(){openChat({id:t.peer,name:t.name})}))})}
+var ft=null;
+function fetchUsers(){var q=$("q").value.trim().toLowerCase();if(!q){allUsers=[];renderList();return}
+storeP.then(function(s){return s.searchUsers(q)}).then(function(u){if($("q").value.trim().toLowerCase()===q){allUsers=u;renderList()}}).catch(function(){})}
+$("q").oninput=function(){renderList();clearTimeout(ft);ft=setTimeout(fetchUsers,250)};
+$("clr").onclick=function(){$("q").value="";renderList();$("q").focus()};
+$("newc").onclick=function(){if(vcur!=="v-list")view("v-list");$("q").focus()};
+
+/* চ্যাট স্ক্রিন */
+function dayLbl(t){var d=new Date(t),n=new Date(),y=new Date(Date.now()-864e5);function k(x){return x.getFullYear()+"-"+x.getMonth()+"-"+x.getDate()}
+if(k(d)===k(n))return"আজ";if(k(d)===k(y))return"গতকাল";try{return d.toLocaleDateString("bn-BD",{day:"numeric",month:"long"})}catch(e){return""}}
+function renderMsgs(list){var b=$("msgs"),pd="";list=list.slice().sort(function(a,c){return a.ts-c.ts});b.textContent="";
+list.forEach(function(m,i){var dl=dayLbl(m.ts);if(dl!==pd){pd=dl;var c=document.createElement("div");c.className="day";c.textContent=dl;b.appendChild(c)}
+var nx=list[i+1],pv=list[i-1],mine=m.from===me.id,d=document.createElement("div");
+d.className="b "+(mine?"me":"them")+((!nx||nx.from!==m.from||dayLbl(nx.ts)!==dl)?" tail":"")+((pv&&pv.from===m.from&&dayLbl(pv.ts)===dl)?" cont":"");
+if(i<shown)d.style.animation="none";d.appendChild(document.createTextNode(m.text));var s=document.createElement("small");s.textContent=tm(m.ts)+(mine?" ✓":"");d.appendChild(s);b.appendChild(d)});
+shown=list.length;b.scrollTop=b.scrollHeight}
+function openChat(p){peer=p;shown=0;setAv($("cav"),p.name);$("cname").textContent=p.name;$("cstat").textContent="";$("msgs").textContent="";
+storeP.then(function(s){if(unM)unM();unM=s.watchMsgs(chatId(me.id,p.id),renderMsgs)});view("v-chat")}
+$("cb").onclick=function(){if(unM){unM();unM=null}view("v-list")};
+function sendMsg(){var t=$("mi").value.trim();if(!t||!peer)return;$("mi").value="";$("mi").parentNode.classList.remove("has");$("cstat").textContent="";
+storeP.then(function(s){return s.send({from:me.id,to:peer.id,fromName:me.name,toName:peer.name,text:t,ts:Date.now()})}).catch(function(){$("cstat").textContent="মেসেজ পাঠানো যায়নি"})}
+$("ms").onclick=sendMsg;$("mi").oninput=function(){$("mi").parentNode.classList.toggle("has",!!$("mi").value.trim())};$("mi").onkeydown=function(e){if(e.key==="Enter")sendMsg()};
+
+/* সেশন: Firebase লগইন অবস্থা */
+function enter(u,prof,instant){me={id:u.uid,name:prof.name};setAv($("av"),me.name);$("hello").textContent=me.name;$("who").textContent=u.phoneNumber||u.email||"";note.textContent="আপনার একাউন্ট Moon Star-এ চালু আছে";$("q").value="";allUsers=[];resetView();
+if(unT)unT();unT=store.watchThreads(me.id,function(t){threads=t;renderList()});renderList();
+if(instant&&cur!=="s-home"){$(cur).classList.add("hide");$("s-home").classList.remove("hide");cur="s-home";$("sub").classList.add("hide");$("brand").classList.add("hide");document.documentElement.classList.add("full")}else go("s-home")}
+function afterAuth(u,first){fs.doc("users/"+u.uid).get().then(function(d){if(d.exists&&d.data().name)enter(u,d.data(),first);
+else{$("nm").value=u.displayName||"";if(first&&cur==="s-auth"){$("s-auth").classList.add("hide");$("s-profile").classList.remove("hide");cur="s-profile"}else go("s-profile")}}).catch(function(){say($("msg"),"ডাটা লোড করা যায়নি। ইন্টারনেট ও Firestore Rules দেখুন।")})}
+$("out").onclick=function(){if(unT){unT();unT=null}if(unM){unM();unM=null}me=null;confirmation=null;if(auth)auth.signOut()};
+if(READY){var first=true;auth.onAuthStateChanged(function(u){var f=first;first=false;
+if(!u){if(cur==="s-home"||cur==="s-profile"||cur==="s-otp")go("s-auth",true);return}
+afterAuth(u,f)})}
+</script>
+</body>
+</html>
